@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h1>Detection Benchmark</h1>
+  <p class="muted">{{ report.limitation_note }}</p>
+  <div class="grid-3">
+    <div class="card"><strong>Accuracy</strong><div>{{ report.accuracy_label }}</div></div>
+    <div class="card"><strong>Precision</strong><div>{{ report.precision_label }}</div></div>
+    <div class="card"><strong>Recall</strong><div>{{ report.recall_label }}</div></div>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Sample</th><th>Lang</th><th>Expected</th><th>Predicted</th><th>Score</th><th>Pass</th></tr>
+    </thead>
+    <tbody>
+      {% for row in report.rows %}
+      <tr>
+        <td>{{ row.title }}</td>
+        <td>{{ row.language }}</td>
+        <td>{{ row.expected }}</td>
+        <td>{{ row.predicted }}</td>
+        <td>{{ row.risk_index }}</td>
+        <td>{{ "Yes" if row.passed else "No" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

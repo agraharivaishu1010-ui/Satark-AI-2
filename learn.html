@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h1>Scam Awareness Academy</h1>
+  <div class="grid-3">
+    {% for lesson in lessons %}
+    <article class="card">
+      <span class="badge badge-low">{{ lesson.category }}</span>
+      <h2>{{ lesson.title }}</h2>
+      <p class="muted">{{ lesson.summary }}</p>
+      <p><strong>Defense:</strong> {{ lesson.defense }}</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+<section class="card">
+  <h2>Spot-the-Scam Quiz</h2>
+  {% if quiz_result %}
+  <p role="status" aria-live="polite"><strong>Your Score: {{ quiz_result.score }} / {{ quiz_result.total }}</strong></p>
+  {% endif %}
+  <form method="post" action="/learn/quiz">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+    {% for q in questions %}
+    <fieldset class="card">
+      <legend>{{ q.message }}</legend>
+      <label><input type="radio" name="{{ q.id }}" value="scam" required /> Fraudulent / Scam</label>
+      <label><input type="radio" name="{{ q.id }}" value="legitimate" required /> Legitimate / Safe</label>
+      {% if quiz_result %}
+      <p class="muted"><strong>Answer:</strong> {{ q.answer }} — {{ q.explanation }}</p>
+      {% endif %}
+    </fieldset>
+    {% endfor %}
+    <button type="submit" class="btn">Check Answers</button>
+  </form>
+</section>
+{% endblock %}

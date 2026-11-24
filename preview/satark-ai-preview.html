@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SATARK AI v2.2.0 — Personal Digital Scam Guardian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-page: #F6F5F0;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F1F3F8;
+      --bg-input: #F8FAFC;
+      --bg-header: rgba(255, 255, 255, 0.84);
+      --ink-main: #0B1120;
+      --ink-sub: #475569;
+      --ink-muted: #64748B;
+      --border: #E2E8F0;
+      --border-strong: #CBD5E1;
+      --accent: #4F46E5;
+      --accent-2: #7C3AED;
+      --accent-soft: rgba(79, 70, 229, 0.10);
+      --danger: #E11D48;
+      --danger-soft: rgba(225, 29, 72, 0.11);
+      --danger-border: rgba(225, 29, 72, 0.30);
+      --warn: #D97706;
+      --warn-soft: rgba(217, 119, 6, 0.13);
+      --warn-border: rgba(217, 119, 6, 0.32);
+      --safe: #059669;
+      --safe-soft: rgba(5, 150, 105, 0.12);
+      --safe-border: rgba(5, 150, 105, 0.32);
+      --radius: 1.2rem;
+      --shadow-card: 0 10px 30px -12px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
+      --shadow-glow: 0 16px 40px -14px rgba(79, 70, 229, 0.22);
+    }
+    html.theme-dark {
+      --bg-page: #070910;
+      --bg-surface: #0E1320;
+      --bg-subtle: #151C2E;
+      --bg-input: #0A0E19;
+      --bg-header: rgba(10, 14, 25, 0.82);
+      --ink-main: #F8FAFC;
+      --ink-sub: #94A3B8;
+      --ink-muted: #64748B;
+      --border: #1E2840;
+      --border-strong: #2C3A5B;
+      --accent: #6366F1;
+      --accent-2: #8B5CF6;
+      --accent-soft: rgba(99, 102, 241, 0.18);
+      --danger: #FB7185;
+      --danger-soft: rgba(244, 63, 94, 0.15);
+      --danger-border: rgba(244, 63, 94, 0.38);
+      --warn: #FBBF24;
+      --warn-soft: rgba(245, 158, 11, 0.16);
+      --warn-border: rgba(245, 158, 11, 0.36);
+      --safe: #34D399;
+      --safe-soft: rgba(16, 185, 129, 0.15);
+      --safe-border: rgba(16, 185, 129, 0.35);
+      --shadow-card: 0 14px 36px -12px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      --shadow-glow: 0 20px 50px -16px rgba(99, 102, 241, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", "Noto Sans Devanagari", -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      background-image:
+        radial-gradient(ellipse 60% 45% at 15% -5%, rgba(99, 102, 241, 0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 88% 0%, rgba(16, 185, 129, 0.11) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 35% at 50% 105%, rgba(244, 63, 94, 0.08) 0%, transparent 55%);
+      background-attachment: fixed;
+      color: var(--ink-main);
+      line-height: 1.58;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, .font-display {
+      font-family: "Outfit", "Noto Sans Devanagari", sans-serif;
+      letter-spacing: -0.025em;
+    }
+    :focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+    .container { max-width: 1160px; width: 100%; margin: 0 auto; padding: 0 1.2rem; }
+
+    /* Top Header */
+    .site-header {
+      position: sticky; top: 0; z-index: 40;
+      background: var(--bg-header);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.85rem; padding: 0.72rem 0; flex-wrap: wrap;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.65rem;
+      font-family: "Outfit", sans-serif; font-weight: 800; font-size: 1.12rem;
+    }
+    .brand-logo {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      display: grid; place-items: center;
+      box-shadow: 0 6px 18px -4px rgba(99, 102, 241, 0.6);
+    }
+    .brand-badge {
+      font-family: "JetBrains Mono", monospace; font-size: 0.68rem; font-weight: 600;
+      padding: 0.16rem 0.5rem; border-radius: 999px;
+      background: var(--accent-soft); color: var(--accent); border: 1px solid rgba(99, 102, 241, 0.25);
+    }
+    .nav-tabs {
+      display: flex; gap: 0.2rem; padding: 0.26rem;
+      border-radius: 0.95rem; background: var(--bg-subtle); border: 1px solid var(--border);
+    }
+    .nav-btn {
+      border: none; background: transparent; cursor: pointer;
+      color: var(--ink-sub); font-weight: 600; font-size: 0.82rem;
+      padding: 0.46rem 0.82rem; border-radius: 0.72rem;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      transition: all 0.16s ease;
+    }
+    .nav-btn:hover { color: var(--ink-main); }
+    .nav-btn[aria-current="page"] {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px -3px rgba(99, 102, 241, 0.55);
+    }
+    .pref-bar { display: flex; gap: 0.45rem; align-items: center; margin-left: auto; }
+    .pill-btn {
+      border: 1px solid var(--border-strong); background: var(--bg-subtle); color: var(--ink-main);
+      border-radius: 999px; height: 38px; padding: 0 0.95rem; font-size: 0.82rem; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.16s ease;
+    }
+    .pill-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .pill-btn[aria-pressed="true"] {
+      background: var(--accent-soft); color: var(--accent); border-color: var(--accent);
+    }
+    .icon-circle-btn {
+      width: 38px; height: 38px; border-radius: 999px; padding: 0;
+      border: 1px solid var(--border-strong); background: var(--bg-subtle); color: var(--ink-main);
+      display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.16s ease; flex-shrink: 0;
+    }
+    .icon-circle-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .icon-circle-btn[aria-pressed="true"].simple-active {
+      background: var(--accent-soft); border-color: var(--accent); color: var(--accent);
+    }
+
+    /* Status Strip */
+    .status-strip {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      gap: 0.6rem; margin: 1.15rem 0 1rem; padding: 0.55rem 0.95rem;
+      border-radius: 0.85rem; background: var(--bg-surface); border: 1px solid var(--border);
+      font-size: 0.78rem; color: var(--ink-sub);
+    }
+    .status-live { display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 600; color: var(--ink-main); }
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--safe);
+      box-shadow: 0 0 0 3px var(--safe-soft);
+    }
+
+    /* Main Grid */
+    main { flex: 1; padding: 0 0 4.8rem; }
+    .scanner-layout { display: grid; grid-template-columns: 1.06fr 0.94fr; gap: 1.25rem; align-items: start; }
+    @media (max-width: 900px) { .scanner-layout { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--bg-surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.4rem; box-shadow: var(--shadow-card);
+      margin-bottom: 1.15rem; position: relative;
+    }
+    .card-hero { box-shadow: var(--shadow-glow); border-color: var(--border-strong); }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.9rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.95rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.85rem; }
+
+    h1 { font-size: 1.75rem; font-weight: 800; margin: 0 0 0.35rem; line-height: 1.16; }
+    h2 { font-size: 1.18rem; font-weight: 700; margin: 0 0 0.55rem; }
+    h3 { font-size: 0.98rem; font-weight: 700; margin: 0 0 0.5rem; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.71rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--accent); margin-bottom: 0.4rem;
+    }
+    .muted { color: var(--ink-sub); font-size: 0.88rem; margin: 0 0 0.9rem; }
+    label { display: block; font-weight: 600; font-size: 0.82rem; margin-bottom: 0.35rem; color: var(--ink-sub); }
+
+    /* Terminal-style Message Composer */
+    .composer-shell {
+      border: 1px solid var(--border-strong); border-radius: 0.95rem;
+      background: var(--bg-input); overflow: hidden; margin-bottom: 0.95rem;
+      transition: border-color 0.16s, box-shadow 0.16s;
+    }
+    .composer-shell:focus-within {
+      border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .composer-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      padding: 0.48rem 0.85rem; background: var(--bg-subtle); border-bottom: 1px solid var(--border);
+      font-size: 0.74rem; color: var(--ink-sub); font-family: "JetBrains Mono", monospace;
+    }
+    .composer-shell textarea {
+      width: 100%; border: none; background: transparent; color: var(--ink-main);
+      padding: 0.85rem 0.95rem; font: inherit; font-size: 0.94rem; line-height: 1.6;
+      resize: vertical; margin: 0; display: block;
+    }
+    .composer-shell textarea:focus { outline: none; box-shadow: none; }
+    .composer-bottom {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem;
+      padding: 0.48rem 0.85rem; border-top: 1px solid var(--border);
+      font-size: 0.75rem; color: var(--ink-sub); background: var(--bg-subtle);
+    }
+
+    input[type="text"], select, .plain-textarea {
+      width: 100%; padding: 0.72rem 0.92rem; border-radius: 0.8rem;
+      border: 1px solid var(--border-strong); background: var(--bg-input); color: var(--ink-main);
+      font: inherit; font-size: 0.9rem; margin-bottom: 0.85rem; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    input[type="text"]:focus, select:focus, .plain-textarea:focus {
+      outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+      border: none; cursor: pointer; padding: 0.74rem 1.3rem; border-radius: 0.85rem;
+      font-weight: 700; font-size: 0.88rem; color: #FFFFFF;
+      background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+      box-shadow: 0 8px 22px -6px rgba(99, 102, 241, 0.65);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s;
+    }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 12px 26px -6px rgba(99, 102, 241, 0.75); }
+    .btn-sec {
+      background: var(--bg-subtle); color: var(--ink-main);
+      border: 1px solid var(--border-strong); box-shadow: none;
+    }
+    .btn-sec:hover { border-color: var(--accent); color: var(--accent); transform: none; filter: none; box-shadow: none; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.55rem; align-items: center; }
+
+    /* Sample & Filter Chips */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 0.42rem; margin-bottom: 0.95rem; }
+    .chip {
+      border: 1px solid var(--border); background: var(--bg-subtle); color: var(--ink-sub);
+      border-radius: 999px; padding: 0.36rem 0.78rem; font-size: 0.77rem; font-weight: 600;
+      cursor: pointer; transition: all 0.15s ease;
+    }
+    .chip:hover { color: var(--ink-main); border-color: var(--border-strong); }
+    .chip.active {
+      background: var(--accent-soft); border-color: var(--accent); color: var(--accent);
+    }
+
+    .tele-pill {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 0.16rem 0.55rem; border-radius: 999px; font-weight: 700; font-size: 0.72rem;
+      background: var(--bg-surface); border: 1px solid var(--border); color: var(--ink-main);
+    }
+
+    /* Circular SVG Gauge + Verdict Hero */
+    .verdict-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      padding-bottom: 1rem; border-bottom: 1px solid var(--border); margin-bottom: 1rem;
+    }
+    .gauge-wrap { position: relative; width: 92px; height: 92px; flex-shrink: 0; }
+    .gauge-wrap svg { transform: rotate(-90deg); width: 92px; height: 92px; }
+    .gauge-center {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .gauge-num { font-family: "Outfit", sans-serif; font-size: 1.55rem; font-weight: 800; line-height: 1; }
+    .gauge-lbl { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--ink-sub); margin-top: 2px; }
+
+    .seg-meter { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin: 0.75rem 0 1rem; }
+    .seg-bar { height: 8px; border-radius: 999px; background: var(--bg-subtle); transition: background 0.25s ease; }
+    .seg-high { background: var(--danger); box-shadow: 0 0 8px var(--danger-soft); }
+    .seg-medium { background: var(--warn); }
+    .seg-low { background: var(--safe); }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.32rem;
+      padding: 0.24rem 0.7rem; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .badge-high { background: var(--danger-soft); color: var(--danger); border: 1px solid var(--danger-border); }
+    .badge-medium { background: var(--warn-soft); color: var(--warn); border: 1px solid var(--warn-border); }
+    .badge-low { background: var(--safe-soft); color: var(--safe); border: 1px solid var(--safe-border); }
+
+    /* 6-Dimension Matrix */
+    .dim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.55rem; margin: 0.85rem 0; }
+    @media (max-width: 520px) { .dim-grid { grid-template-columns: repeat(2, 1fr); } }
+    .dim-pill {
+      padding: 0.58rem 0.72rem; border-radius: 0.78rem;
+      background: var(--bg-subtle); border: 1px solid var(--border);
+    }
+    .dim-pill.hot { border-color: var(--danger-border); background: var(--danger-soft); }
+    .dim-pill.ok { border-color: var(--safe-border); background: var(--safe-soft); }
+    .dim-key { color: var(--ink-sub); display: block; font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .dim-val { font-weight: 700; font-size: 0.83rem; color: var(--ink-main); }
+
+    /* Evidence Highlight */
+    .evidence-box {
+      padding: 0.95rem 1.05rem; border-radius: 0.85rem; background: var(--bg-input);
+      border: 1px solid var(--border); font-size: 0.92rem; line-height: 1.75; margin-bottom: 0.9rem;
+    }
+    .evidence-mark {
+      background: var(--danger-soft); color: var(--danger);
+      border-bottom: 2px solid var(--danger); padding: 0.06rem 0.28rem; border-radius: 0.3rem; font-weight: 700;
+    }
+    .signal-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+    .signal-item {
+      padding: 0.65rem 0.85rem; border-radius: 0.75rem; background: var(--bg-subtle);
+      border: 1px solid var(--border); font-size: 0.84rem;
+    }
+    .mono { font-family: "JetBrains Mono", ui-monospace, monospace; word-break: break-all; font-size: 0.82rem; }
+
+    /* URL Anatomy */
+    .anatomy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.7rem; margin: 0.95rem 0; }
+    .anatomy-cell {
+      padding: 0.75rem 0.9rem; border-radius: 0.85rem;
+      background: var(--bg-subtle); border: 1px solid var(--border);
+    }
+    .anatomy-cell.owner { border-color: var(--accent); background: var(--accent-soft); }
+
+    .alert-box {
+      border-left: 3.5px solid var(--accent); background: var(--bg-subtle);
+      padding: 0.9rem 1.05rem; border-radius: 0.7rem; margin: 0.8rem 0; font-size: 0.88rem;
+    }
+    .alert-danger { border-left-color: var(--danger); background: var(--danger-soft); }
+
+    .stat-card {
+      background: var(--bg-subtle); border: 1px solid var(--border);
+      border-radius: 0.95rem; padding: 1.05rem; text-align: center;
+    }
+    .stat-val { font-family: "Outfit", sans-serif; font-size: 1.65rem; font-weight: 800; color: var(--accent); line-height: 1.15; }
+
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--ink-sub); background: var(--bg-subtle);
+    }
+    th, td { padding: 0.7rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+    tbody tr:hover { background: var(--bg-subtle); }
+
+    pre.worksheet {
+      background: var(--bg-input); border: 1px solid var(--border); padding: 1.05rem; border-radius: 0.85rem;
+      overflow-x: auto; font-family: "JetBrains Mono", monospace; font-size: 0.82rem; white-space: pre-wrap; color: var(--ink-main);
+    }
+
+    .history-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.65rem;
+      padding: 0.6rem 0.8rem; border-radius: 0.78rem; background: var(--bg-subtle);
+      border: 1px solid var(--border); margin-bottom: 0.45rem; font-size: 0.82rem;
+    }
+
+    .hidden { display: none !important; }
+    .toast {
+      position: fixed; bottom: 4.5rem; right: 1.1rem; z-index: 60;
+      background: var(--accent); color: #FFFFFF; padding: 0.72rem 1.1rem;
+      border-radius: 0.85rem; font-size: 0.84rem; font-weight: 700;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35); opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .toast.show { opacity: 1; }
+
+    /* Floating Bottom Dock with Icons */
+    .mobile-dock {
+      display: grid; position: fixed; bottom: 0.75rem; left: 50%; transform: translateX(-50%);
+      width: min(520px, calc(100% - 1.5rem)); z-index: 45;
+      background: var(--bg-header); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border-strong); border-radius: 1.35rem;
+      padding: 0.42rem; box-shadow: 0 16px 38px -8px rgba(0, 0, 0, 0.55);
+      grid-template-columns: repeat(5, 1fr); gap: 0.3rem;
+    }
+    .dock-btn {
+      border: none; background: transparent; color: var(--ink-sub);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.22rem;
+      padding: 0.48rem 0.25rem; border-radius: 0.95rem; font-size: 0.72rem; font-weight: 700;
+      cursor: pointer; transition: all 0.16s ease;
+    }
+    .dock-btn:hover { color: var(--ink-main); background: var(--bg-subtle); }
+    .dock-btn.active {
+      background: linear-gradient(135deg, #5B50F6 0%, #4F46E5 100%);
+      color: #FFFFFF;
+      box-shadow: 0 6px 18px -4px rgba(91, 80, 246, 0.65);
+    }
+    .dock-icon { width: 20px; height: 20px; display: grid; place-items: center; }
+    @media (max-width: 820px) {
+      .nav-tabs { display: none; }
+    }
+
+    body.simple-safety-mode p, body.simple-safety-mode li, body.simple-safety-mode label,
+    body.simple-safety-mode input, body.simple-safety-mode textarea, body.simple-safety-mode select {
+      font-size: 1.06rem; line-height: 1.75;
+    }
+    body.simple-safety-mode button { min-height: 44px; }
+
+    .site-footer {
+      border-top: 1px solid var(--border); padding: 1.15rem 0;
+      color: var(--ink-muted); font-size: 0.8rem; text-align: center;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.001ms !important; animation-duration: 0.001ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+        </div>
+        <span>SATARK AI</span>
+      </div>
+
+      <nav class="nav-tabs" aria-label="Main Navigation">
+        <button type="button" class="nav-btn" data-tab="scanner" aria-current="page" id="nav-scanner">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Scanner</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="url" id="nav-url">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          <span>URL Inspector</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="benchmark" id="nav-benchmark">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <span>Benchmark</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="learn" id="nav-learn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          <span>Academy &amp; Quiz</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="report" id="nav-report">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>1930 Report</span>
+        </button>
+      </nav>
+
+      <div class="pref-bar" aria-label="Display Preferences">
+        <button type="button" class="pill-btn" id="btn-lang" title="Switch Language (English / Hindi)">हिंदी</button>
+        <button type="button" class="icon-circle-btn" id="btn-theme" aria-pressed="true" aria-label="Toggle Light or Dark Theme" title="Switch to Light Mode">
+          <svg id="theme-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="#FACC15" stroke="#FACC15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+        </button>
+        <button type="button" class="icon-circle-btn" id="btn-simple" aria-pressed="false" aria-label="Toggle Simple Safety Mode" title="Simple Safety Mode: OFF">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#93C5FD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+    <div class="status-strip">
+      <span class="status-live"><span class="pulse-dot" aria-hidden="true"></span> Local Engine Active · Hybrid TF-IDF ML + Deterministic Rules · Zero-Visit URL Inspection</span>
+      <span>India Cybercrime Helpline: <strong>1930</strong></span>
+    </div>
+
+    <!-- SCANNER TAB -->
+    <section id="tab-scanner">
+      <div class="scanner-layout">
+        <!-- Left: Message Console -->
+        <div>
+          <div class="card card-hero">
+            <span class="eyebrow">Multilingual Threat Console</span>
+            <h1 id="hero-title">Personal Digital Scam Guardian</h1>
+            <p class="muted" id="hero-sub">Inspect suspicious SMS, WhatsApp forwards, or emails in English, Hindi, Hinglish, or Indic scripts—locally with zero tracking.</p>
+
+            <div class="chip-row" aria-label="Quick Sample Messages">
+              <button type="button" class="chip active" data-sample="sbi">SBI KYC Block</button>
+              <button type="button" class="chip" data-sample="upi">UPI Cashback Trap</button>
+              <button type="button" class="chip" data-sample="electricity">Electricity Cut</button>
+              <button type="button" class="chip" data-sample="hinglish">Hinglish OTP Scam</button>
+              <button type="button" class="chip" data-sample="legit">Legit SBI OTP</button>
+            </div>
+
+            <label for="scanner-input" id="lbl-msg">Suspicious Message</label>
+            <div class="composer-shell">
+              <div class="composer-top">
+                <span>MESSAGE PAYLOAD · ZERO-TRACKING SANDBOX</span>
+                <span>Ctrl + Enter to scan</span>
+              </div>
+              <textarea id="scanner-input" rows="5" maxlength="5000" placeholder="Paste suspicious message here..."></textarea>
+              <div class="composer-bottom" id="live-telemetry" aria-live="polite">
+                <span id="tele-script">Script: Auto</span>
+                <span id="tele-signals">Live Signals: 0</span>
+                <span id="tele-chars">0 / 5000</span>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <label for="context-select" id="lbl-ctx">Scenario Context</label>
+                <select id="context-select">
+                  <option value="general">General / Unsure</option>
+                  <option value="banking" selected>Banking &amp; UPI</option>
+                  <option value="employment">Job &amp; Part-Time</option>
+                  <option value="courier">Courier &amp; Delivery</option>
+                  <option value="utility">Electricity &amp; Govt</option>
+                  <option value="lottery">Lottery &amp; Crypto</option>
+                </select>
+              </div>
+              <div>
+                <label for="lang-select" id="lbl-lang">Language</label>
+                <select id="lang-select">
+                  <option value="auto">Auto-detect</option>
+                  <option value="en">English</option>
+                  <option value="hi">Hindi (हिन्दी)</option>
+                  <option value="hinglish">Hinglish</option>
+                  <option value="gu">Gujarati</option>
+                  <option value="ta">Tamil</option>
+                  <option value="bn">Bengali</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button type="button" class="btn" id="btn-run-scan">Analyze Message</button>
+              <button type="button" class="btn btn-sec" id="btn-clear-scan">Clear</button>
+            </div>
+          </div>
+
+          <div class="card" id="history-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.65rem;">
+              <h3 style="margin:0;">Recent Local Scans (<span id="history-count">0</span>)</h3>
+              <button type="button" class="pill-btn" id="btn-clear-history">Clear History</button>
+            </div>
+            <div id="history-list" class="muted" style="margin:0;">Scans appear here during your session.</div>
+          </div>
+        </div>
+
+        <!-- Right: Threat Verdict Dashboard -->
+        <div id="scan-result-area" class="hidden" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- URL INSPECTOR TAB -->
+    <section id="tab-url" class="hidden">
+      <div class="card card-hero">
+        <span class="eyebrow">Zero-Visit Structural Analysis</span>
+        <h1>Zero-Visit URL Inspector</h1>
+        <p class="muted">Inspects true registrable domain ownership, homoglyphs (such as <code>sb1</code>), suspicious TLDs, IP hosts, and executable URI schemes without contacting the remote host.</p>
+        <div class="chip-row">
+          <button type="button" class="chip" data-quick-url="https://sbi.co.in.kyc-verify-portal.xyz/login?redirect=http://evil.test">SBI Lookalike</button>
+          <button type="button" class="chip" data-quick-url="https://sb1-online-verify.xyz/login">Homoglyph (sb1)</button>
+          <button type="button" class="chip" data-quick-url="javascript:alert(1)">javascript: URI</button>
+          <button type="button" class="chip" data-quick-url="https://retail.onlinesbi.sbi/">Official SBI</button>
+        </div>
+        <label for="url-input">URL to Inspect</label>
+        <input type="text" id="url-input" value="https://sbi.co.in.kyc-verify-portal.xyz/login" placeholder="https://..." />
+        <button type="button" class="btn" id="btn-run-url">Inspect URL Locally</button>
+      </div>
+      <div id="url-result-area" aria-live="polite"></div>
+    </section>
+
+    <!-- BENCHMARK TAB -->
+    <section id="tab-benchmark" class="hidden">
+      <div class="card card-hero">
+        <span class="eyebrow">Transparent Regression Suite</span>
+        <h1>Live 19-Sample Detection Benchmark</h1>
+        <p class="muted">Evaluates 19 bundled multilingual synthetic examples (EN, HI, Hinglish, GU, TA, BN) for regression testing; not an independent real-world accuracy claim.</p>
+        <div class="grid-4" id="bm-stats"></div>
+      </div>
+      <div class="card">
+        <div class="chip-row" aria-label="Filter Benchmark Samples">
+          <button type="button" class="chip active" data-bm-filter="all">All (19)</button>
+          <button type="button" class="chip" data-bm-filter="scam">Scams (15)</button>
+          <button type="button" class="chip" data-bm-filter="benign">Benign (4)</button>
+          <button type="button" class="chip" data-bm-filter="indic">Hindi / Hinglish / Indic</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Sample</th><th>Lang</th><th>Expected</th><th>Predicted</th><th>Rule Score</th><th>ML Signal</th><th>Pass</th></tr>
+            </thead>
+            <tbody id="bm-rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACADEMY & QUIZ TAB -->
+    <section id="tab-learn" class="hidden">
+      <div class="card card-hero">
+        <span class="eyebrow">Citizen Cyber Defense</span>
+        <h1>Scam Awareness Academy</h1>
+        <div class="grid-3">
+          <article class="card" style="margin:0;">
+            <span class="badge badge-low">UPI &amp; Payments</span>
+            <h3 style="margin-top:0.6rem;">UPI Collect &amp; QR Trap</h3>
+            <p class="muted" style="margin:0;">UPI PIN is strictly an authorization to DEBIT money from your account—never to receive cashback, refunds, or OLX payments.</p>
+          </article>
+          <article class="card" style="margin:0;">
+            <span class="badge badge-low">Phishing &amp; URLs</span>
+            <h3 style="margin-top:0.6rem;">Lookalike Bank Domains</h3>
+            <p class="muted" style="margin:0;">In <code>sbi.co.in.kyc-update.xyz</code>, the true owner is <code>kyc-update.xyz</code>. Always read right before the first single slash.</p>
+          </article>
+          <article class="card" style="margin:0;">
+            <span class="badge badge-low">Impersonation</span>
+            <h3 style="margin-top:0.6rem;">Electricity &amp; Digital Arrest</h3>
+            <p class="muted" style="margin:0;">Utilities never threaten 9:30 PM cuts via personal 10-digit numbers, and police never conduct video-call "Digital Arrests".</p>
+          </article>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Spot-the-Scam Quiz</h2>
+        <div id="quiz-container"></div>
+        <div class="btn-row" style="margin-top:0.85rem;">
+          <button type="button" class="btn" id="btn-grade-quiz">Check Answers</button>
+          <span id="quiz-score-out" style="font-weight:800;color:var(--accent);" aria-live="polite"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1930 REPORT TAB -->
+    <section id="tab-report" class="hidden">
+      <div class="card card-hero">
+        <span class="eyebrow">India Golden Hour Response</span>
+        <h1>1930 / Cybercrime.gov.in Incident Worksheet</h1>
+        <div class="alert-box alert-danger">
+          <strong>Act within the Golden Hour:</strong> Call National Cybercrime Helpline <strong>1930</strong> immediately to freeze disputed funds, then file at <strong>cybercrime.gov.in</strong> and report suspect numbers on <strong>Chakshu (sancharsaathi.gov.in)</strong>.
+        </div>
+        <div class="grid-2">
+          <div><label for="inc-date">Date &amp; Time</label><input type="text" id="inc-date" placeholder="2026-11-24 15:30 IST" /></div>
+          <div><label for="inc-amount">Debited Amount (₹)</label><input type="text" id="inc-amount" placeholder="15000" /></div>
+          <div><label for="inc-utr">12-Digit UTR / UPI Ref</label><input type="text" id="inc-utr" placeholder="432910293847" /></div>
+          <div><label for="inc-suspect">Suspect Phone / URL</label><input type="text" id="inc-suspect" placeholder="+91 98XXXXXXXX or URL" /></div>
+        </div>
+        <label for="inc-notes">Additional Notes</label>
+        <textarea class="plain-textarea" id="inc-notes" rows="3" placeholder="Brief summary of what happened..."></textarea>
+        <div class="btn-row">
+          <button type="button" class="btn" id="btn-gen-sheet">Generate Worksheet</button>
+          <button type="button" class="btn btn-sec" id="btn-copy-sheet">Copy Worksheet</button>
+          <button type="button" class="btn btn-sec" id="btn-dl-sheet">Download .txt</button>
+        </div>
+      </div>
+      <div id="sheet-output-card" class="card hidden" aria-live="polite">
+        <h2>Ready-to-Copy Incident Worksheet</h2>
+        <pre class="worksheet" id="sheet-pre"></pre>
+      </div>
+    </section>
+  </main>
+
+  <nav class="mobile-dock" aria-label="Quick Tab Bar">
+    <button type="button" class="dock-btn active" data-tab="scanner">
+      <span class="dock-icon" aria-hidden="true">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#FDE047" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+      </span>
+      <span>Scan</span>
+    </button>
+    <button type="button" class="dock-btn" data-tab="url">
+      <span class="dock-icon" aria-hidden="true">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      </span>
+      <span>URL</span>
+    </button>
+    <button type="button" class="dock-btn" data-tab="benchmark">
+      <span class="dock-icon" aria-hidden="true">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7" rx="1"/><rect x="12" y="6" width="3" height="11" rx="1"/><rect x="17" y="13" width="3" height="4" rx="1"/></svg>
+      </span>
+      <span>Bench</span>
+    </button>
+    <button type="button" class="dock-btn" data-tab="learn">
+      <span class="dock-icon" aria-hidden="true">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      </span>
+      <span>Learn</span>
+    </button>
+    <button type="button" class="dock-btn" data-tab="report">
+      <span class="dock-icon" aria-hidden="true">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#FB7185" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </span>
+      <span>1930</span>
+    </button>
+  </nav>
+
+  <footer class="site-footer">
+    <div class="container">
+      SATARK AI v2.2.0 — Explainable Rules, Zero-Visit URL Inspection &amp; Bilingual Accessibility · India Cyber Helpline: <strong>1930</strong>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STATE = { tab: "scanner", lang: "en", simple: false, dark: true, bmFilter: "all", lastResult: null, history: [] };
+
+    const UI_COPY = {
+      en: {
+        nav_scanner: "Scanner", nav_url: "URL Inspector", nav_benchmark: "Benchmark",
+        nav_learn: "Academy & Quiz", nav_report: "1930 Report",
+        hero_title: "Personal Digital Scam Guardian",
+        hero_sub: "Inspect suspicious SMS, WhatsApp forwards, or emails in English, Hindi, Hinglish, or Indic scripts—locally with zero tracking.",
+        lbl_msg: "Suspicious Message", lbl_ctx: "Scenario Context", lbl_lang: "Language",
+        btn_scan: "Analyze Message", btn_lang: "हिन्दी"
+      },
+      hi: {
+        nav_scanner: "स्कैनर", nav_url: "लिंक जांच", nav_benchmark: "बेंचमार्क",
+        nav_learn: "अकादमी और क्विज़", nav_report: "1930 रिपोर्ट",
+        hero_title: "आपका व्यक्तिगत डिजिटल स्कैम सुरक्षा कवच",
+        hero_sub: "कोई भी संदिग्ध SMS, WhatsApp संदेश या ईमेल पेस्ट करें। लिंक को खोले बिना उसकी संरचना और हाइब्रिड ML से स्थानीय जांच की जाती है।",
+        lbl_msg: "संदिग्ध संदेश", lbl_ctx: "संदेश का संदर्भ", lbl_lang: "भाषा",
+        btn_scan: "संदेश की जांच करें", btn_lang: "English"
+      }
+    };
+
+    const SAMPLES = {
+      sbi: "URGENT SBI ALERT: Your SBI account will be blocked today. Update PAN KYC immediately within 2 hours at http://sbi.co.in.kyc-verify-portal.xyz/login",
+      upi: "Cashback Reward of Rs 4500 Approved! Open UPI app and enter your UPI PIN on the collect request to receive money immediately.",
+      electricity: "Dear Consumer, your electricity power will be disconnected tonight at 9:30 PM because previous month bill was not updated. Immediately call our electricity officer at 8901234567.",
+      hinglish: "Dear customer aapka bank account aaj raat block ho jayega. Abhi apna KYC update karo aur 6 digit OTP share karo: http://hdfc-kyc-fast.top/login",
+      legit: "Your OTP for SBI YONO login is 482910. Valid for 10 minutes. NEVER share your OTP or ATM PIN with anyone, even if they claim to be bank staff."
+    };
+
+    const BENCHMARK_SAMPLES = [
+      { id: "s1", title: "SBI KYC Block (EN)", language: "en", is_scam: true, text: SAMPLES.sbi },
+      { id: "s2", title: "UPI Cashback PIN Trap (EN)", language: "en", is_scam: true, text: SAMPLES.upi },
+      { id: "s3", title: "Electricity Disconnection (EN)", language: "en", is_scam: true, text: SAMPLES.electricity },
+      { id: "s4", title: "Part-Time YouTube Job (EN)", language: "en", is_scam: true, text: "Part-time WFH job! Earn Rs 3500 to Rs 8000 per day by liking YouTube videos and rating Google Maps. Pay refundable registration fee today." },
+      { id: "s5", title: "Courier Incomplete Address (EN)", language: "en", is_scam: true, text: "India Post: Your parcel is held due to incomplete house address. Update delivery address within 24 hours at http://indiapost-track.top/update" },
+      { id: "s6", title: "AnyDesk Remote Support (EN)", language: "en", is_scam: true, text: "Your KYC is pending. Install AnyDesk screen sharing app and share your 6-digit OTP with officer immediately." },
+      { id: "s7", title: "Fake KBC Lottery (Hinglish)", language: "hinglish", is_scam: true, text: "Badhai ho! Aapne KBC lucky draw mein 25 lakh lottery jeeti hai. Turant processing fee bhejo claim karne ke liye." },
+      { id: "s8", title: "Hinglish Bank KYC + OTP", language: "hinglish", is_scam: true, text: SAMPLES.hinglish },
+      { id: "s9", title: "Hindi Bank Block Threat", language: "hi", is_scam: true, text: "चेतावनी: आपका बैंक खाता आज रात ब्लॉक हो जाएगा। तुरंत केवाईसी अपडेट करें और अपना ओटीपी शेयर करें।" },
+      { id: "s10", title: "Hindi Electricity Threat", language: "hi", is_scam: true, text: "आपका बिजली कनेक्शन आज रात 9:30 बजे काट दिया जाएगा। तुरंत संपर्क करें।" },
+      { id: "s11", title: "Guaranteed Crypto Scam (EN)", language: "en", is_scam: true, text: "Join our VIP crypto signal group for 100% risk-free profit and guaranteed daily returns! Double your money this week." },
+      { id: "s12", title: "Fake Scholarship Fee (EN)", language: "en", is_scam: true, text: "Your national scholarship grant is approved! Pay Rs 499 processing fee today to disburse amount at http://scholarship-claim.xyz" },
+      { id: "s13", title: "Gujarati KYC Scam", language: "gu", is_scam: true, text: "તમારું ખાતું બંધ થઈ જશે. તરત જ કેવાયસી અપડેટ કરો અને ઓટીપી શેર કરો." },
+      { id: "s14", title: "Tamil KYC Scam", language: "ta", is_scam: true, text: "உங்கள் வங்கி கணக்கு முடக்கப்படும். உடனே கேஒய்சி புதுப்பித்து ஓடிபி பகிரவும்." },
+      { id: "s15", title: "Bengali KYC Scam", language: "bn", is_scam: true, text: "আপনার ব্যাংক অ্যাকাউন্ট বন্ধ হয়ে যাবে। অবিলম্বে কেওয়াইসি আপডেট করুন এবং ওটিপি দিন।" },
+      { id: "s16", title: "Legitimate SBI OTP Notice", language: "en", is_scam: false, text: SAMPLES.legit },
+      { id: "s17", title: "Routine Workplace Reminder", language: "en", is_scam: false, text: "Hi team, urgent reminder to submit the Q3 sprint slides before 5 PM today so we can review them in standup." },
+      { id: "s18", title: "Benign Family Message (Hinglish)", language: "hinglish", is_scam: false, text: "Bhai shaam ko 7 baje ghar aa jana, dinner sath mein karenge." },
+      { id: "s19", title: "Official Bank URL Notice", language: "en", is_scam: false, text: "Your monthly e-statement is ready. View it securely by logging into https://retail.onlinesbi.sbi/" }
+    ];
+
+    const PROTECTED_BRANDS = {
+      sbi: ["sbi.co.in", "onlinesbi.sbi", "sbicard.com"],
+      hdfc: ["hdfcbank.com", "hdfc.com"],
+      icici: ["icicibank.com", "icicidirect.com"],
+      axis: ["axisbank.com"],
+      paytm: ["paytm.com", "paytmbank.com"],
+      indiapost: ["indiapost.gov.in"],
+      uidai: ["uidai.gov.in"]
+    };
+    const MULTI_TLDS = new Set(["co.in", "gov.in", "nic.in", "ac.in", "org.in", "co.uk"]);
+    const BAD_TLDS = new Set(["xyz", "top", "click", "loan", "work", "gq", "tk", "icu", "vip", "live"]);
+    const SHORTENERS = new Set(["bit.ly", "tinyurl.com", "t.co", "rb.gy", "cutt.ly", "shorturl.at"]);
+
+    const RULES = [
+      { type: "urgency", cat: null, w: 18, sev: "medium", re: /\b(immediately|urgent|within\s+\d+\s*(?:hours?|hrs?)|tonight\s+at\s+[0-9:]+\s*(?:pm|am)?|turant|aaj\s+raat)\b|तुरंत|आज\s+रात/i, exp: "Uses artificial urgency or a countdown deadline to pressure you." },
+      { type: "impersonation", cat: "Bank Account Impersonation", w: 32, sev: "high", re: /\b(account\s+(?:will\s+be\s+|has\s+been\s+)?(?:blocked|suspended)|aapka\s+(?:bank\s+)?(?:account|khata)\s+(?:aaj\s+raat\s+)?block)\b|बैंक\s+खाता.*ब्लॉक/i, exp: "Threatens that your bank account will be blocked to trigger panic." },
+      { type: "impersonation", cat: "KYC Update Phishing", w: 34, sev: "high", re: /\b(update\s+(?:your\s+|pan\s+)?kyc|kyc\s+(?:is\s+)?(?:pending|expired|update\s+karo))\b|केवाईसी\s+अपडेट/i, exp: "Demands an urgent KYC/PAN update—a major banking phishing lure." },
+      { type: "credential_request", cat: "OTP or Credential Theft", w: 48, sev: "high", re: /\b(share\s+(?:your\s+|6[\s-]digit\s+)?(?:otp|pin|cvv|password)|otp\s+share\s+karo)\b|ओटीपी\s+शेयर/i, exp: "Asks you to share an OTP, PIN, or password. Legitimate banks never do this." },
+      { type: "payment_request", cat: "UPI & QR Payment Deception", w: 48, sev: "high", re: /\b(enter\s+(?:your\s+)?upi\s+pin|scan\s+(?:this\s+|the\s+)?qr.*receive|approve\s+(?:the\s+)?collect\s+request)\b/i, exp: "Claims you must enter a UPI PIN or scan a QR to receive money. UPI PIN is only for sending money." },
+      { type: "payment_request", cat: "Job & Recruitment Fraud", w: 42, sev: "high", re: /\b(earn\s+(?:rs\.?|₹)?\s*\d[\d,]*.*(?:per\s+day|daily)|liking\s+youtube\s+videos|registration\s+fee)\b/i, exp: "Promises high daily payouts for trivial online tasks or asks for a registration fee." },
+      { type: "payment_request", cat: "Prize & Lottery Fraud", w: 45, sev: "high", re: /\b(lottery\s+jeeti|lucky\s+draw|won.*(?:lottery|kbc)|processing\s+fee)\b/i, exp: "Claims you won an unexpected lottery/prize and demands a processing fee." },
+      { type: "impersonation", cat: "Courier & Parcel Delivery Scam", w: 38, sev: "high", re: /\b(parcel.*incomplete.*address|update\s+delivery\s+address)\b/i, exp: "Uses a fake incomplete-address courier notice to push an unverified link." },
+      { type: "impersonation", cat: "Government & Utility Impersonation", w: 46, sev: "high", re: /\b(electricity\s+power\s+will\s+be\s+disconnected|digital\s+arrest|call\s+our\s+electricity\s+officer)\b|बिजली\s+कनेक्शन\s+आज\s+रात.*काट/i, exp: "Impersonates a utility board or law enforcement officer to coerce immediate compliance." },
+      { type: "remote_access", cat: "Remote Access & Tech Support Scam", w: 50, sev: "high", re: /\b(anydesk|teamviewer|quicksupport|screen\s+sharing\s+app)\b/i, exp: "Asks you to install a remote-access app to take control of your device." },
+      { type: "investment_lure", cat: "Investment & Crypto Fraud", w: 44, sev: "high", re: /\b(guaranteed\s+daily\s+returns|100%\s+risk[\s-]free\s+profit|double\s+your\s+money)\b/i, exp: "Promises guaranteed or risk-free crypto/trading returns." },
+      { type: "indic_scam", cat: "Indic KYC / OTP Phishing", w: 38, sev: "high", re: /કેવાયસી|ઓટીપી|ખાતું\s+બંધ|வங்கி\s+கணக்கு|ஓடிபி|கேஒய்சி|কেওয়াইসি|ওটিপি|ব্যাংক\s+অ্যাকাউন্ট\s+বন্ধ/i, exp: "Matches a Gujarati, Tamil, or Bengali banking/KYC/OTP scam pattern." }
+    ];
+
+    function escapeHtml(s) {
+      return String(s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById("toast");
+      el.textContent = msg;
+      el.classList.add("show");
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove("show"), 2600);
+    }
+
+    function copyText(text, successMsg) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast(successMsg)).catch(() => fallbackCopy(text, successMsg));
+      } else {
+        fallbackCopy(text, successMsg);
+      }
+    }
+
+    function fallbackCopy(text, successMsg) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); showToast(successMsg); } catch { showToast("Ready to copy manually."); }
+      document.body.removeChild(ta);
+    }
+
+    function downloadTxt(filename, content) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([content], { type: "text/plain;charset=utf-8" }));
+      a.download = filename;
+      a.click();
+      showToast(`Downloaded ${filename}`);
+    }
+
+    const ML = (() => {
+      const tokRe = /[a-zA-Z0-9\u0900-\u097F\u0980-\u09FF\u0A80-\u0AFF\u0B80-\u0BFF]{2,}/g;
+      const tokenize = t => (String(t || "").match(tokRe) || []).map(x => x.toLowerCase());
+      const docs = BENCHMARK_SAMPLES.map(s => ({ toks: tokenize(s.text), scam: s.is_scam }));
+      const df = new Map();
+      docs.forEach(d => new Set(d.toks).forEach(tk => df.set(tk, (df.get(tk) || 0) + 1)));
+      const idf = new Map();
+      df.forEach((f, tk) => idf.set(tk, Math.log((docs.length + 1) / (f + 1)) + 1));
+      const sw = new Map(), bw = new Map();
+      let st = 0, bt = 0, sc = 0;
+      docs.forEach(d => {
+        if (d.scam) sc++;
+        const tf = new Map();
+        d.toks.forEach(tk => tf.set(tk, (tf.get(tk) || 0) + 1));
+        tf.forEach((c, tk) => {
+          const w = (1 + Math.log(c)) * (idf.get(tk) || 1);
+          if (d.scam) { sw.set(tk, (sw.get(tk) || 0) + w); st += w; }
+          else { bw.set(tk, (bw.get(tk) || 0) + w); bt += w; }
+        });
+      });
+      const prior = sc / docs.length;
+      return {
+        predict(text) {
+          const toks = tokenize(text);
+          if (!toks.length) return 0;
+          let ls = Math.log(prior), lb = Math.log(1 - prior);
+          const V = Math.max(1, df.size);
+          toks.forEach(tk => {
+            if (!idf.has(tk)) return;
+            ls += Math.log(((sw.get(tk) || 0) + 1) / (st + V));
+            lb += Math.log(((bw.get(tk) || 0) + 1) / (bt + V));
+          });
+          const diff = Math.max(-20, Math.min(20, ls - lb));
+          return +(1 / (1 + Math.exp(-diff))).toFixed(4);
+        }
+      };
+    })();
+
+    function detectScript(text) {
+      if (/[\u0A80-\u0AFF]/.test(text)) return "Gujarati";
+      if (/[\u0B80-\u0BFF]/.test(text)) return "Tamil";
+      if (/[\u0980-\u09FF]/.test(text)) return "Bengali";
+      if (/[\u0900-\u097F]/.test(text)) return "Hindi (देवनागरी)";
+      if ((text.match(/\b(aapka|aapne|apna|abhi|turant|karo|khata|raat|jayega|jeeti)\b/gi) || []).length >= 2) return "Hinglish";
+      return "English";
+    }
+
+    function normalizeHomoglyphs(s) {
+      return s.toLowerCase().replace(/0/g, "o").replace(/1/g, "i").replace(/3/g, "e").replace(/5/g, "s").replace(/@/g, "a").replace(/rn/g, "m");
+    }
+
+    function getRegDomain(host) {
+      const clean = (host || "").toLowerCase().replace(/\.$/, "");
+      if (/^(\d{1,3}\.){3}\d{1,3}$/.test(clean)) return { reg: clean, sub: "", subCount: 0, tld: "IPv4" };
+      const parts = clean.split(".").filter(Boolean);
+      if (parts.length <= 2) return { reg: clean, sub: "", subCount: 0, tld: parts[parts.length - 1] || "" };
+      const last2 = parts.slice(-2).join(".");
+      if (MULTI_TLDS.has(last2) && parts.length >= 3) {
+        return { reg: parts.slice(-3).join("."), sub: parts.slice(0, -3).join("."), subCount: parts.length - 3, tld: last2 };
+      }
+      return { reg: last2, sub: parts.slice(0, -2).join("."), subCount: parts.length - 2, tld: parts[parts.length - 1] };
+    }
+
+    function inspectUrl(raw) {
+      const sub = (raw || "").trim();
+      if (/^(javascript|data|vbscript|file):/i.test(sub)) {
+        return { url: sub, scheme: sub.split(":")[0].toLowerCase(), subDomain: "None", reg: "Non-Web / Executable", tld: "Unsafe", risk: "high", score: 95, brand: null, summary: "Executable URI scheme detected. Never open or paste this link.", signals: [{ name: "dangerous_uri_scheme", sev: "high", exp: "Uses a dangerous non-web scheme." }] };
+      }
+      let parsed;
+      try { parsed = new URL(/^[a-z]+:\/\//i.test(sub) ? sub : "http://" + sub); }
+      catch { return { url: sub, scheme: "invalid", subDomain: "-", reg: "Invalid", tld: "-", risk: "high", score: 82, brand: null, summary: "Malformed URL structure.", signals: [{ name: "malformed_url", sev: "high", exp: "Cannot be parsed as a valid web address." }] }; }
+      const host = parsed.hostname.toLowerCase();
+      const { reg, sub: subDom, subCount, tld } = getRegDomain(host);
+      const signals = [];
+      let pts = 0;
+      if (parsed.username || parsed.password) { pts += 45; signals.push({ name: "embedded_credentials", sev: "high", exp: "Contains '@' authority credentials to disguise real host." }); }
+      if (SHORTENERS.has(reg)) { pts += 24; signals.push({ name: "url_shortener", sev: "medium", exp: `Shortener (${reg}) conceals final destination.` }); }
+      if (BAD_TLDS.has(tld)) { pts += 26; signals.push({ name: "high_risk_tld", sev: "medium", exp: `Uses throwaway phishing TLD (.${tld}).` }); }
+      if (subCount >= 2) { pts += 16; signals.push({ name: "excessive_subdomains", sev: "medium", exp: `Stacks ${subCount} subdomains before '${reg}'.` }); }
+      if (parsed.protocol !== "https:") { pts += 10; signals.push({ name: "unencrypted_http", sev: "low", exp: "Uses HTTP instead of HTTPS." }); }
+      const normHost = normalizeHomoglyphs(host);
+      let brand = null;
+      for (const [b, officials] of Object.entries(PROTECTED_BRANDS)) {
+        if ((host.includes(b) || parsed.pathname.toLowerCase().includes(b) || normHost.includes(b)) && !officials.includes(reg)) {
+          brand = b.toUpperCase();
+          pts += 48;
+          signals.push({ name: "brand_impersonation", sev: "high", exp: `Impersonates ${brand} (including homoglyphs), while actual owner is '${reg}'.` });
+          break;
+        }
+      }
+      if (/(redirect|url=|token=|otp=)/i.test(parsed.search)) { pts += 18; signals.push({ name: "suspicious_query", sev: "medium", exp: "Contains redirect/token query parameters." }); }
+      const score = Math.min(100, pts);
+      const risk = score >= 60 ? "high" : score >= 25 ? "medium" : "low";
+      const summary = risk === "high" ? `High-risk URL. True owner is '${reg}'—do not open.` : risk === "medium" ? `Suspicious signals for '${reg}'. Verify before clicking.` : `No strong structural phishing indicators for '${reg}'. HTTPS alone is not proof of safety.`;
+      return { url: sub, scheme: parsed.protocol.replace(":", ""), subDomain: subDom || "(none)", reg, tld: "." + tld, risk, score, brand, summary, signals };
+    }
+
+    function highlightEvidence(raw, evidence) {
+      const phrases = [...new Set(evidence.map(e => e.text).filter(t => t && t.length >= 2))].sort((a, b) => b.length - a.length);
+      if (!phrases.length) return escapeHtml(raw);
+      const low = raw.toLowerCase(), ivs = [];
+      phrases.forEach(p => {
+        const lp = p.toLowerCase();
+        let pos = 0;
+        while ((pos = low.indexOf(lp, pos)) !== -1) { ivs.push([pos, pos + lp.length]); pos += Math.max(1, lp.length); }
+      });
+      if (!ivs.length) return escapeHtml(raw);
+      ivs.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+      const merged = [ivs[0]];
+      for (let i = 1; i < ivs.length; i++) {
+        if (ivs[i][0] <= merged[merged.length - 1][1]) merged[merged.length - 1][1] = Math.max(merged[merged.length - 1][1], ivs[i][1]);
+        else merged.push(ivs[i]);
+      }
+      let out = "", cur = 0;
+      merged.forEach(([s, e]) => {
+        if (s > cur) out += escapeHtml(raw.slice(cur, s));
+        out += `<mark class="evidence-mark">${escapeHtml(raw.slice(s, e))}</mark>`;
+        cur = e;
+      });
+      if (cur < raw.length) out += escapeHtml(raw.slice(cur));
+      return out;
+    }
+
+    function analyzeMessage(text, ctxId = "general") {
+      const clean = (text || "").trim();
+      const script = detectScript(clean);
+      const urls = [...new Set((clean.match(/https?:\/\/[^\s<>"'\)\]]+/gi) || []).map(u => u.replace(/[.,;!?]+$/, "")))].slice(0, 8);
+      const urlResults = urls.map(inspectUrl);
+      const isSafeOtp = /\b(?:never|do\s+not)\s+share\s+(?:your\s+)?(?:otp|pin)\b/i.test(clean) && /\botp\b.*\b\d{4,8}\b/i.test(clean);
+      const hasBadUrl = urlResults.some(u => u.risk !== "low");
+      const evidence = [];
+      let pts = 0, topCat = "No Strong Scam Indicators";
+      for (const r of RULES) {
+        const m = clean.match(r.re);
+        if (!m) continue;
+        if (isSafeOtp && r.type === "credential_request" && !hasBadUrl) continue;
+        evidence.push({ type: r.type, text: m[0].trim(), sev: r.sev, exp: r.exp });
+        pts += r.w;
+        if (r.cat) topCat = r.cat;
+      }
+      const maxUrl = urlResults.reduce((mx, u) => Math.max(mx, u.score), 0);
+      const onlyUrgency = evidence.length > 0 && evidence.every(e => e.type === "urgency") && !hasBadUrl;
+      let score;
+      if (isSafeOtp && !hasBadUrl) { score = Math.min(15, pts); topCat = "Legitimate Security / OTP Notice"; }
+      else if (onlyUrgency) { score = Math.min(22, pts); topCat = "No Strong Scam Indicators"; }
+      else { score = Math.min(100, pts + Math.round(maxUrl * 0.65)); }
+      const risk = score >= 60 ? "high" : score >= 30 ? "medium" : "low";
+      const band = risk === "high" ? "High Scam Risk" : risk === "medium" ? "Verify Carefully" : "No Strong Indicators";
+      const mlProb = ML.predict(clean);
+      const evTypes = new Set(evidence.map(e => e.type));
+      const dims = [
+        { k: "Sender", v: isSafeOtp ? "Official Notice" : (evTypes.has("impersonation") || hasBadUrl ? "Spoofed" : "Unverified"), tone: isSafeOtp ? "ok" : (evTypes.has("impersonation") || hasBadUrl ? "hot" : "") },
+        { k: "Urgency", v: evTypes.has("urgency") ? "High" : "Low", tone: evTypes.has("urgency") ? "hot" : "" },
+        { k: "PIN / Pay Ask", v: (evTypes.has("credential_request") || evTypes.has("payment_request") || evTypes.has("remote_access")) ? "Detected" : "None", tone: (evTypes.has("credential_request") || evTypes.has("payment_request") || evTypes.has("remote_access")) ? "hot" : "" },
+        { k: "Link Risk", v: urlResults.some(u => u.risk === "high") ? "High" : (hasBadUrl ? "Medium" : "Low"), tone: hasBadUrl ? "hot" : "ok" },
+        { k: "Context", v: ctxId, tone: "" },
+        { k: "Safeguard", v: isSafeOtp ? "Present" : "Absent", tone: isSafeOtp ? "ok" : "" }
+      ];
+      return { text: clean, script, risk, band, score, mlProb, category: topCat, evidence, urlResults, ctxId, dims, highlighted: highlightEvidence(clean, evidence) };
+    }
+
+    function updateTelemetry() {
+      const val = document.getElementById("scanner-input").value;
+      const clean = val.trim();
+      let hits = 0;
+      if (clean) RULES.forEach(r => { if (r.re.test(clean)) hits++; });
+      document.getElementById("tele-script").innerHTML = `<span class="tele-pill">Script: ${clean ? detectScript(clean) : "Auto"}</span>`;
+      document.getElementById("tele-signals").innerHTML = `<span class="tele-pill">Live Signals: ${hits}</span>`;
+      document.getElementById("tele-chars").textContent = `${val.length} / 5000`;
+    }
+
+    function renderHistory() {
+      document.getElementById("history-count").textContent = String(STATE.history.length);
+      const list = document.getElementById("history-list");
+      if (!STATE.history.length) {
+        list.innerHTML = `<span class="muted">Scans appear here during your session.</span>`;
+        return;
+      }
+      list.innerHTML = STATE.history.slice(0, 5).map((h, i) => `
+        <div class="history-item">
+          <div><span class="badge badge-${h.risk}">${h.score}</span> <strong style="margin-left:0.35rem;">${escapeHtml(h.category)}</strong></div>
+          <button type="button" class="pill-btn" data-reopen="${i}">View</button>
+        </div>`).join("");
+      list.querySelectorAll("[data-reopen]").forEach(btn => btn.addEventListener("click", () => {
+        const item = STATE.history[Number(btn.dataset.reopen)];
+        if (item) renderScanResult(item, false);
+      }));
+    }
+
+    function renderScanResult(res, pushHistory = true) {
+      STATE.lastResult = res;
+      if (pushHistory) {
+        STATE.history.unshift(res);
+        if (STATE.history.length > 20) STATE.history.pop();
+        renderHistory();
+      }
+      const box = document.getElementById("scan-result-area");
+      box.classList.remove("hidden");
+      const filledSegs = Math.max(res.score > 0 ? 1 : 0, Math.round(res.score / 10));
+      const segsHtml = Array.from({ length: 10 }, (_, idx) => `<div class="seg-bar ${idx < filledSegs ? "seg-" + res.risk : ""}"></div>`).join("");
+      const circ = 2 * Math.PI * 38;
+      const offset = circ - (res.score / 100) * circ;
+      const strokeColor = res.risk === "high" ? "var(--danger)" : res.risk === "medium" ? "var(--warn)" : "var(--safe)";
+
+      const simpleBox = STATE.simple ? `
+        <div class="alert-box">
+          <strong>${res.risk === "high" ? "Treat this message as unsafe." : res.risk === "medium" ? "Pause and verify before acting." : "No strong scam indicators found."}</strong>
+          <ul style="margin:0.4rem 0 0;padding-left:1.2rem;">
+            <li>Do not click unverified links or share OTP/UPI PIN.</li>
+            <li>Verify via the official app or dial 1930 if money was debited.</li>
+          </ul>
+        </div>` : "";
+
+      box.innerHTML = `
+        <div class="card card-hero">
+          <div class="verdict-top">
+            <div>
+              <span class="badge badge-${res.risk}">${escapeHtml(res.band)}</span>
+              <h2 style="margin:0.5rem 0 0.2rem;font-size:1.32rem;">${escapeHtml(res.category)}</h2>
+              <div class="muted" style="margin:0;">Script: <strong>${escapeHtml(res.script)}</strong> · Hybrid ML Signal: <strong>${(res.mlProb * 100).toFixed(1)}%</strong></div>
+            </div>
+            <div class="gauge-wrap" role="img" aria-label="Risk Index ${res.score} out of 100">
+              <svg viewBox="0 0 92 92">
+                <circle cx="46" cy="46" r="38" fill="none" stroke="var(--bg-subtle)" stroke-width="8"/>
+                <circle cx="46" cy="46" r="38" fill="none" stroke="${strokeColor}" stroke-width="8" stroke-linecap="round" stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"/>
+              </svg>
+              <div class="gauge-center">
+                <span class="gauge-num" style="color:${strokeColor};">${res.score}</span>
+                <span class="gauge-lbl">/ 100</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="seg-meter" role="progressbar" aria-valuenow="${res.score}" aria-valuemin="0" aria-valuemax="100" aria-label="Risk Index Meter">${segsHtml}</div>
+          ${simpleBox}
+
+          <div class="dim-grid">
+            ${res.dims.map(d => `<div class="dim-pill ${d.tone}"><span class="dim-key">${escapeHtml(d.k)}</span><span class="dim-val">${escapeHtml(d.v)}</span></div>`).join("")}
+          </div>
+
+          <div class="btn-row" style="margin-top:0.9rem;">
+            <button type="button" class="btn btn-sec" id="btn-speak">Read Verdict Aloud</button>
+            <button type="button" class="btn btn-sec" id="btn-copy-alert">Copy Family Alert</button>
+            <button type="button" class="btn btn-sec" id="btn-dl-report">Download .txt Report</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Highlighted Evidence</h3>
+          <div class="evidence-box">${res.highlighted}</div>
+          ${res.evidence.length ? `<ul class="signal-list">${res.evidence.map(e => `<li class="signal-item"><span class="badge badge-${e.sev === "high" ? "high" : "medium"}" style="margin-right:0.45rem;">${escapeHtml(e.type)}</span>${escapeHtml(e.exp)}</li>`).join("")}</ul>` : `<p class="muted" style="margin:0;">No high-risk rule triggers matched.</p>`}
+        </div>
+
+        ${res.urlResults.length ? `<div class="card"><h3>Zero-Visit URL Inspection</h3>${res.urlResults.map(u => `
+          <div class="alert-box ${u.risk === "high" ? "alert-danger" : ""}" style="margin-bottom:0;">
+            <span class="badge badge-${u.risk}">${u.risk} (${u.score}/100)</span>
+            <div class="mono" style="margin:0.4rem 0 0.2rem;">${escapeHtml(u.url)}</div>
+            <div>True registrable domain: <strong>${escapeHtml(u.reg)}</strong></div>
+            <div class="muted" style="margin:0.2rem 0 0;">${escapeHtml(u.summary)}</div>
+          </div>`).join("")}</div>` : ""}
+      `;
+
+      document.getElementById("btn-speak").addEventListener("click", () => {
+        if (!("speechSynthesis" in window)) { showToast("Speech synthesis unavailable in this browser."); return; }
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(`${res.band}. ${res.category}. Risk index ${res.score} out of 100.`);
+        u.lang = STATE.lang === "hi" ? "hi-IN" : "en-IN";
+        window.speechSynthesis.speak(u);
+        showToast("Reading verdict aloud...");
+      });
+      document.getElementById("btn-copy-alert").addEventListener("click", () => {
+        copyText(`SATARK AI Family Alert: "${res.category}" (${res.band}, ${res.score}/100). Do NOT click links or share OTP/UPI PIN. Emergency India Cyber Helpline: 1930 / https://cybercrime.gov.in`, "Family safety alert copied!");
+      });
+      document.getElementById("btn-dl-report").addEventListener("click", () => {
+        downloadTxt("satark-ai-report.txt", `SATARK AI REPORT\nRisk: ${res.band} (${res.score}/100)\nML Signal: ${(res.mlProb * 100).toFixed(1)}%\nCategory: ${res.category}\nEmergency Helpline: 1930 / https://cybercrime.gov.in\n`);
+      });
+    }
+
+    function renderUrlResult(raw) {
+      const u = inspectUrl(raw);
+      document.getElementById("url-result-area").innerHTML = `
+        <div class="card card-hero">
+          <div class="verdict-top">
+            <div>
+              <span class="badge badge-${u.risk}">${u.risk} risk</span>
+              <h2 style="margin:0.45rem 0 0.2rem;">True Domain Owner: <span class="mono">${escapeHtml(u.reg)}</span></h2>
+              <p class="muted" style="margin:0;">${escapeHtml(u.summary)}</p>
+            </div>
+            <div class="gauge-num" style="color:${u.risk === "high" ? "var(--danger)" : u.risk === "medium" ? "var(--warn)" : "var(--safe)"};">${u.score}<span style="font-size:0.8rem;color:var(--ink-sub);">/100</span></div>
+          </div>
+          <div class="anatomy-grid">
+            <div class="anatomy-cell"><span class="dim-key">Scheme</span><span class="dim-val mono">${escapeHtml(u.scheme)}</span></div>
+            <div class="anatomy-cell"><span class="dim-key">Subdomains</span><span class="dim-val mono">${escapeHtml(u.subDomain)}</span></div>
+            <div class="anatomy-cell owner"><span class="dim-key">True Owner</span><span class="dim-val mono">${escapeHtml(u.reg)}</span></div>
+            <div class="anatomy-cell"><span class="dim-key">TLD / Brand</span><span class="dim-val mono">${escapeHtml(u.tld)}${u.brand ? " · Spoofs " + escapeHtml(u.brand) : ""}</span></div>
+          </div>
+          ${u.signals.length ? `<ul class="signal-list">${u.signals.map(s => `<li class="signal-item"><span class="badge badge-${s.sev === "high" ? "high" : s.sev === "medium" ? "medium" : "low"}" style="margin-right:0.45rem;">${escapeHtml(s.name)}</span>${escapeHtml(s.exp)}</li>`).join("")}</ul>` : `<p class="muted" style="margin:0;">No structural phishing signals triggered.</p>`}
+        </div>`;
+    }
+
+    function renderBenchmark() {
+      let tp = 0, fp = 0, tn = 0, fn = 0;
+      const evaluated = BENCHMARK_SAMPLES.map(s => {
+        const res = analyzeMessage(s.text);
+        const predScam = res.risk !== "low";
+        const pass = predScam === s.is_scam;
+        if (s.is_scam && predScam) tp++;
+        else if (!s.is_scam && predScam) fp++;
+        else if (!s.is_scam && !predScam) tn++;
+        else fn++;
+        return { s, res, pass };
+      });
+      const acc = Math.round(((tp + tn) / BENCHMARK_SAMPLES.length) * 100);
+      const prec = tp + fp ? Math.round((tp / (tp + fp)) * 100) : 0;
+      const rec = tp + fn ? Math.round((tp / (tp + fn)) * 100) : 0;
+      document.getElementById("bm-stats").innerHTML = `
+        <div class="stat-card"><div class="stat-val">${acc}%</div><div class="muted" style="margin:0;">Accuracy (${tp + tn}/${BENCHMARK_SAMPLES.length})</div></div>
+        <div class="stat-card"><div class="stat-val">${prec}%</div><div class="muted" style="margin:0;">Precision</div></div>
+        <div class="stat-card"><div class="stat-val">${rec}%</div><div class="muted" style="margin:0;">Recall</div></div>
+        <div class="stat-card"><div class="stat-val">${tp}/${fp}/${tn}/${fn}</div><div class="muted" style="margin:0;">TP / FP / TN / FN</div></div>`;
+      const filtered = evaluated.filter(({ s }) => {
+        if (STATE.bmFilter === "scam") return s.is_scam;
+        if (STATE.bmFilter === "benign") return !s.is_scam;
+        if (STATE.bmFilter === "indic") return s.language !== "en";
+        return true;
+      });
+      document.getElementById("bm-rows").innerHTML = filtered.map(({ s, res, pass }) =>
+        `<tr><td><strong>${escapeHtml(s.title)}</strong></td><td>${s.language}</td><td>${s.is_scam ? "scam" : "benign"}</td><td><span class="badge badge-${res.risk}">${res.risk}</span></td><td>${res.score}</td><td>${(res.mlProb * 100).toFixed(0)}%</td><td>${pass ? "Pass" : "Fail"}</td></tr>`
+      ).join("");
+    }
+
+    const QUIZ = [
+      { id: "q1", msg: "Your SBI YONO OTP is 918273. Valid for 10 mins. NEVER share your OTP with anyone.", ans: "legitimate", exp: "Standard OTP notice with explicit do-not-share warning and no suspicious link." },
+      { id: "q2", msg: "Your electricity will be cut tonight at 9:30 PM. Call officer 9812345678 immediately.", ans: "scam", exp: "Electricity disconnection scam using tonight-deadline panic and a personal mobile number." },
+      { id: "q3", msg: "Sign in to verify your KYC at https://hdfcbank.com.secure-login.xyz/kyc", ans: "scam", exp: "True registrable domain is secure-login.xyz, not hdfcbank.com." }
+    ];
+
+    function renderQuiz() {
+      document.getElementById("quiz-container").innerHTML = QUIZ.map((q, idx) => `
+        <div class="alert-box">
+          <strong>Q${idx + 1}:</strong> ${escapeHtml(q.msg)}
+          <div class="btn-row" style="margin-top:0.55rem;">
+            <label style="display:inline-flex;align-items:center;gap:0.35rem;margin:0;color:var(--ink-main);"><input type="radio" name="${q.id}" value="scam" /> Fraudulent / Scam</label>
+            <label style="display:inline-flex;align-items:center;gap:0.35rem;margin:0;color:var(--ink-main);"><input type="radio" name="${q.id}" value="legitimate" /> Legitimate / Safe</label>
+          </div>
+          <div id="fb-${q.id}" class="muted" style="margin:0.45rem 0 0;"></div>
+        </div>`).join("");
+    }
+
+    function applyLang() {
+      const c = UI_COPY[STATE.lang];
+      document.documentElement.lang = STATE.lang;
+      document.querySelector("#nav-scanner span").textContent = c.nav_scanner;
+      document.querySelector("#nav-url span").textContent = c.nav_url;
+      document.querySelector("#nav-benchmark span").textContent = c.nav_benchmark;
+      document.querySelector("#nav-learn span").textContent = c.nav_learn;
+      document.querySelector("#nav-report span").textContent = c.nav_report;
+      document.getElementById("hero-title").textContent = c.hero_title;
+      document.getElementById("hero-sub").textContent = c.hero_sub;
+      document.getElementById("lbl-msg").textContent = c.lbl_msg;
+      document.getElementById("lbl-ctx").textContent = c.lbl_ctx;
+      document.getElementById("lbl-lang").textContent = c.lbl_lang;
+      document.getElementById("btn-run-scan").textContent = c.btn_scan;
+      document.getElementById("btn-lang").textContent = c.btn_lang;
+    }
+
+    function switchTab(tab) {
+      STATE.tab = tab;
+      ["scanner", "url", "benchmark", "learn", "report"].forEach(t => {
+        document.getElementById("tab-" + t).classList.toggle("hidden", t !== tab);
+        const btn = document.querySelector(`.nav-btn[data-tab="${t}"]`);
+        if (t === tab) btn.setAttribute("aria-current", "page");
+        else btn.removeAttribute("aria-current");
+        const dock = document.querySelector(`.dock-btn[data-tab="${t}"]`);
+        if (dock) dock.classList.toggle("active", t === tab);
+      });
+      if (tab === "benchmark") renderBenchmark();
+      if (tab === "url") renderUrlResult(document.getElementById("url-input").value);
+    }
+
+    document.querySelectorAll("[data-tab]").forEach(btn => btn.addEventListener("click", () => switchTab(btn.dataset.tab)));
+
+    document.querySelectorAll("[data-sample]").forEach(btn => btn.addEventListener("click", () => {
+      document.querySelectorAll("[data-sample]").forEach(c => c.classList.remove("active"));
+      btn.classList.add("active");
+      const txt = SAMPLES[btn.dataset.sample];
+      document.getElementById("scanner-input").value = txt;
+      updateTelemetry();
+      renderScanResult(analyzeMessage(txt, document.getElementById("context-select").value));
+    }));
+
+    document.getElementById("scanner-input").addEventListener("input", updateTelemetry);
+    document.getElementById("scanner-input").addEventListener("keydown", evt => {
+      if ((evt.ctrlKey || evt.metaKey) && evt.key === "Enter") {
+        evt.preventDefault();
+        document.getElementById("btn-run-scan").click();
+      }
+    });
+
+    document.getElementById("btn-run-scan").addEventListener("click", () => {
+      const txt = document.getElementById("scanner-input").value.trim();
+      if (!txt) { showToast("Paste a message or pick a sample first."); return; }
+      renderScanResult(analyzeMessage(txt, document.getElementById("context-select").value));
+    });
+
+    document.getElementById("btn-clear-scan").addEventListener("click", () => {
+      document.getElementById("scanner-input").value = "";
+      updateTelemetry();
+      document.getElementById("scan-result-area").classList.add("hidden");
+    });
+
+    document.getElementById("btn-clear-history").addEventListener("click", () => {
+      STATE.history = [];
+      renderHistory();
+      showToast("Session history cleared.");
+    });
+
+    document.querySelectorAll("[data-quick-url]").forEach(btn => btn.addEventListener("click", () => {
+      document.getElementById("url-input").value = btn.dataset.quickUrl;
+      renderUrlResult(btn.dataset.quickUrl);
+    }));
+
+    document.getElementById("btn-run-url").addEventListener("click", () => renderUrlResult(document.getElementById("url-input").value));
+
+    document.querySelectorAll("[data-bm-filter]").forEach(btn => btn.addEventListener("click", () => {
+      STATE.bmFilter = btn.dataset.bmFilter;
+      document.querySelectorAll("[data-bm-filter]").forEach(c => c.classList.remove("active"));
+      btn.classList.add("active");
+      renderBenchmark();
+    }));
+
+    document.getElementById("btn-grade-quiz").addEventListener("click", () => {
+      let score = 0;
+      QUIZ.forEach(q => {
+        const sel = document.querySelector(`input[name="${q.id}"]:checked`);
+        const ok = sel && sel.value === q.ans;
+        if (ok) score++;
+        document.getElementById("fb-" + q.id).textContent = `${ok ? "Correct!" : "Review:"} (${q.ans}) — ${q.exp}`;
+      });
+      document.getElementById("quiz-score-out").textContent = `Score: ${score} / ${QUIZ.length}`;
+    });
+
+    function buildWorksheet() {
+      return [
+        "SATARK AI — INDIA CYBERCRIME (1930 / CYBERCRIME.GOV.IN) INCIDENT WORKSHEET",
+        "==========================================================================",
+        `Incident Date/Time   : ${document.getElementById("inc-date").value || "[Not provided]"}`,
+        `Debited Amount (INR) : ${document.getElementById("inc-amount").value || "[Not provided]"}`,
+        `12-Digit UTR / Ref   : ${document.getElementById("inc-utr").value || "[Not provided]"}`,
+        `Suspect Phone / URL  : ${document.getElementById("inc-suspect").value || "[Not provided]"}`,
+        `Additional Notes     : ${document.getElementById("inc-notes").value || "[None]"}`,
+        "",
+        "NEXT STEPS: Call 1930 immediately (Golden Hour) & file at https://cybercrime.gov.in"
+      ].join("\n");
+    }
+
+    document.getElementById("btn-gen-sheet").addEventListener("click", () => {
+      document.getElementById("sheet-pre").textContent = buildWorksheet();
+      document.getElementById("sheet-output-card").classList.remove("hidden");
+    });
+
+    document.getElementById("btn-copy-sheet").addEventListener("click", () => {
+      const text = buildWorksheet();
+      document.getElementById("sheet-pre").textContent = text;
+      document.getElementById("sheet-output-card").classList.remove("hidden");
+      copyText(text, "Worksheet copied to clipboard.");
+    });
+
+    document.getElementById("btn-dl-sheet").addEventListener("click", () => {
+      const text = buildWorksheet();
+      document.getElementById("sheet-pre").textContent = text;
+      document.getElementById("sheet-output-card").classList.remove("hidden");
+      downloadTxt("satark-1930-incident-worksheet.txt", text);
+    });
+
+    document.getElementById("btn-lang").addEventListener("click", () => {
+      STATE.lang = STATE.lang === "en" ? "hi" : "en";
+      applyLang();
+      if (STATE.lastResult) renderScanResult(STATE.lastResult, false);
+    });
+
+    document.getElementById("btn-simple").addEventListener("click", () => {
+      STATE.simple = !STATE.simple;
+      document.body.classList.toggle("simple-safety-mode", STATE.simple);
+      const b = document.getElementById("btn-simple");
+      b.setAttribute("aria-pressed", String(STATE.simple));
+      b.classList.toggle("simple-active", STATE.simple);
+      b.title = STATE.simple ? "Simple Safety Mode: ON" : "Simple Safety Mode: OFF";
+      showToast(STATE.simple ? "Simple Safety Mode enabled (larger text & plain guidance)." : "Simple Safety Mode disabled.");
+      if (STATE.lastResult) renderScanResult(STATE.lastResult, false);
+    });
+
+    document.getElementById("btn-theme").addEventListener("click", () => {
+      STATE.dark = !STATE.dark;
+      document.documentElement.classList.toggle("theme-dark", STATE.dark);
+      const b = document.getElementById("btn-theme");
+      b.setAttribute("aria-pressed", String(STATE.dark));
+      b.title = STATE.dark ? "Switch to Light Mode" : "Switch to Dark Mode";
+      b.innerHTML = STATE.dark
+        ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="#FACC15" stroke="#FACC15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>`
+        : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+    });
+
+    renderQuiz();
+    document.getElementById("scanner-input").value = SAMPLES.sbi;
+    updateTelemetry();
+    renderScanResult(analyzeMessage(SAMPLES.sbi, "banking"), true);
+  </script>
+</body>
+</html>

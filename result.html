@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card" aria-live="polite">
+  <span class="badge badge-{{ result.risk_level }}">{{ result.risk_band }} · {{ result.risk_index }}/100</span>
+  <h1>{{ result.category_label_hi if lang == "hi" else result.category_label }}</h1>
+  <p>{{ result.summary_hi if lang == "hi" else result.summary }}</p>
+  <p class="muted">
+    Detected Language: <strong>{{ result.detected_language }}</strong> ·
+    Experimental text signal: <strong>{{ (result.experimental_text_signal * 100) | round(1) }}%</strong> ·
+    Analysis ID: <span class="mono">{{ result.analysis_id }}</span>
+  </p>
+  <p class="muted">{{ result.ml_signal_note }} The deterministic risk score is calculated separately below.</p>
+  {% if simple_mode %}
+  <div class="alert-box">
+    <strong>{{ result.simple_guidance[lang].title }}</strong>
+    <ul>
+      {% for step in result.simple_guidance[lang].steps %}
+      <li>{{ step }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+  <p>
+    <button type="button" id="btn-read-aloud" class="btn btn-secondary"
+      data-speech-lang="{{ 'hi-IN' if lang == 'hi' else 'en-IN' }}"
+      data-speech-text="{{ result.summary_hi if lang == 'hi' else (result.risk_band ~ '. ' ~ result.summary) }}">
+      {{ ui.btn_listen }}
+    </button>
+    <a class="btn" href="/api/v1/report/{{ result.analysis_id }}">{{ ui.btn_report }}</a>
+    <a class="btn btn-secondary" href="/">{{ ui.btn_again }}</a>
+  </p>
+</section>
+<section class="card">
+  <h2>Highlighted Evidence</h2>
+  <p class="muted">
+    Risk breakdown: {{ result.risk_breakdown.rule_points }} rule points +
+    {{ result.risk_breakdown.url_points }} URL points, capped at
+    {{ result.risk_breakdown.score_cap }} (score before cap:
+    {{ result.risk_breakdown.score_before_cap }}).
+  </p>
+  <p>{{ result.highlighted_html | safe }}</p>
+  {% if result.evidence %}
+  <ul>
+    {% for ev in result.evidence %}
+    <li><strong>{{ ev.type }}</strong> ({{ ev.severity }}): {{ ev.explanation_hi if lang == "hi" else ev.explanation_en }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+<section class="card">
+  <h2>{{ result.contextual_advisory.headline }}</h2>
+  <ul>
+    {% for tip in result.recommended_actions %}
+    <li>{{ tip }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% if result.extracted_urls %}
+<section class="card">
+  <h2>Zero-Visit URL Inspection</h2>
+  {% for u in result.extracted_urls %}
+  <div class="card">
+    <span class="badge badge-{{ u.risk_level }}">{{ u.risk_level }} ({{ u.risk_index }}/100)</span>
+    <p class="mono">{{ u.submitted_url }}</p>
+    <p>True registrable domain: <strong>{{ u.registrable_domain or "Invalid" }}</strong></p>
+    <p class="muted">{{ u.summary }}</p>
+  </div>
+  {% endfor %}
+</section>
+{% endif %}
+{% endblock %}

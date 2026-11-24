@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h1>1930 / Cybercrime.gov.in Incident Worksheet</h1>
+  <p class="muted">Prepare your Golden Hour details before calling <strong>1930</strong> or filing at
+    <a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer">cybercrime.gov.in</a> or
+    <a href="https://www.sancharsaathi.gov.in/" target="_blank" rel="noopener noreferrer">Chakshu (Sanchar Saathi)</a>.
+  </p>
+  <form method="post" action="/report">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+    <div class="grid-2">
+      <div><label for="inc-date">Date &amp; Time</label><input id="inc-date" name="date" type="text" placeholder="2026-11-24 15:30 IST" /></div>
+      <div><label for="inc-amount">Debited Amount (₹)</label><input id="inc-amount" name="amount" type="text" placeholder="15000" /></div>
+      <div><label for="inc-utr">12-Digit UTR / UPI Ref</label><input id="inc-utr" name="utr" type="text" placeholder="432910293847" /></div>
+      <div><label for="inc-suspect">Suspect Phone / URL</label><input id="inc-suspect" name="suspect_id" type="text" placeholder="+91 98XXXXXXXX or URL" /></div>
+    </div>
+    <label for="inc-notes">Additional Notes</label>
+    <textarea id="inc-notes" name="notes" rows="3" placeholder="Brief description of what happened..."></textarea>
+    <button type="submit" class="btn">Generate Worksheet</button>
+  </form>
+</section>
+{% if worksheet %}
+<section class="card" aria-live="polite">
+  <h2>Ready-to-Copy Incident Worksheet</h2>
+  <pre class="worksheet">{{ worksheet }}</pre>
+</section>
+{% endif %}
+{% endblock %}

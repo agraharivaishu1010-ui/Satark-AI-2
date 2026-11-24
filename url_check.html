@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h1>Zero-Visit URL Inspector</h1>
+  <p class="muted">Inspects domain ownership, homoglyphs, suspicious TLDs, IP hosts, and dangerous URI schemes locally without contacting the target server.</p>
+  <form method="post" action="/url-check">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+    <label for="url-input">URL to Inspect</label>
+    <input id="url-input" name="url" type="text" value="{{ url }}" required placeholder="https://sbi.co.in.kyc-verify.xyz/login" />
+    <button type="submit" class="btn">Inspect URL Locally</button>
+  </form>
+</section>
+{% if result %}
+<section class="card" aria-live="polite">
+  <span class="badge badge-{{ result.risk_level }}">{{ result.risk_level }} · {{ result.risk_index }}/100</span>
+  <h2>True Domain Owner: <span class="mono">{{ result.registrable_domain or "Invalid / Non-Web" }}</span></h2>
+  <p>{{ result.summary }}</p>
+  {% if result.signals %}
+  <ul>
+    {% for sig in result.signals %}
+    <li><strong>{{ sig.signal }}</strong> ({{ sig.severity }}): {{ sig.explanation }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

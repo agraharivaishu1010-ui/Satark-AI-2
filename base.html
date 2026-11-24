@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" class="{% if theme == 'light' %}theme-light{% else %}theme-dark{% endif %}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}SATARK AI — Personal Digital Scam Guardian{% endblock %}</title>
+  <meta name="description" content="Local-first, explainable multilingual scam message and zero-visit URL inspection." />
+  <meta name="theme-color" content="#4F46E5" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/static/styles.css" />
+  <script src="/static/app.js" defer></script>
+</head>
+<body class="{% if simple_mode %}simple-safety-mode{% endif %}">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand">
+        <img src="/static/icon.svg" alt="" width="32" height="32" />
+        <span>SATARK AI</span>
+      </a>
+      <nav class="nav-links" aria-label="Main Navigation">
+        <a href="/" {% if active_nav == "home" %}aria-current="page"{% endif %}>{{ ui.nav_scanner }}</a>
+        <a href="/url-check" {% if active_nav == "url" %}aria-current="page"{% endif %}>{{ ui.nav_url }}</a>
+        <a href="/screenshot" {% if active_nav == "screenshot" %}aria-current="page"{% endif %}>{{ ui.nav_screenshot }}</a>
+        <a href="/benchmark" {% if active_nav == "benchmark" %}aria-current="page"{% endif %}>{{ ui.nav_benchmark }}</a>
+        <a href="/learn" {% if active_nav == "learn" %}aria-current="page"{% endif %}>{{ ui.nav_learn }}</a>
+        <a href="/report" {% if active_nav == "report" %}aria-current="page"{% endif %}>{{ ui.nav_report }}</a>
+        <a href="/docs">{{ ui.nav_docs }}</a>
+      </nav>
+      <div class="pref-controls" aria-label="Display Preferences">
+        <a class="pill-link" href="/prefs/lang?next={{ request.url.path }}" title="Switch Language">{{ "English" if lang == "hi" else "हिंदी" }}</a>
+        <a class="icon-circle-link" href="/prefs/theme?next={{ request.url.path }}" aria-label="Toggle Light or Dark Theme" title="Toggle Theme">
+          {% if theme == "light" %}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2.2" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          {% else %}
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#FACC15" stroke="#FACC15" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          {% endif %}
+        </a>
+        <a class="icon-circle-link" href="/prefs/simple?next={{ request.url.path }}" aria-label="Toggle Simple Safety Mode" title="{{ ui.simple_on if simple_mode else ui.simple_off }}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#93C5FD" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+  <main id="main-content" tabindex="-1" class="container">
+    {% block content %}{% endblock %}
+  </main>
+  <nav class="floating-dock" aria-label="Quick Tab Bar">
+    <a class="dock-link" href="/" {% if active_nav == "home" %}aria-current="page"{% endif %}>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#FDE047" stroke-width="2.2" aria-hidden="true"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z"/></svg>
+      <span>Scan</span>
+    </a>
+    <a class="dock-link" href="/url-check" {% if active_nav == "url" %}aria-current="page"{% endif %}>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span>URL</span>
+    </a>
+    <a class="dock-link" href="/benchmark" {% if active_nav == "benchmark" %}aria-current="page"{% endif %}>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2.2" aria-hidden="true"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7" rx="1"/><rect x="12" y="6" width="3" height="11" rx="1"/><rect x="17" y="13" width="3" height="4" rx="1"/></svg>
+      <span>Bench</span>
+    </a>
+    <a class="dock-link" href="/learn" {% if active_nav == "learn" %}aria-current="page"{% endif %}>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="2.2" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+      <span>Learn</span>
+    </a>
+    <a class="dock-link" href="/report" {% if active_nav == "report" %}aria-current="page"{% endif %}>
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#FB7185" stroke-width="2.2" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>1930</span>
+    </a>
+  </nav>
+  <footer class="site-footer">
+    <div class="container">
+      SATARK AI v2.2.0 (Python &amp; FastAPI) — Explainable rules, zero-visit URL inspection &amp; privacy-first defaults. Emergency Cybercrime Helpline (India): <strong>1930</strong> ·
+      <a href="https://cybercrime.gov.in/" target="_blank" rel="noopener noreferrer">cybercrime.gov.in</a>
+    </div>
+  </footer>
+</body>
+</html>

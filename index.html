@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="card">
+  <h1>{{ ui.hero_title }}</h1>
+  <p class="muted">{{ ui.hero_sub }}</p>
+  <form method="post" action="/scan">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+    <label for="message-text">{{ ui.msg_label }}</label>
+    <textarea id="message-text" name="text" rows="5" maxlength="5000" required placeholder="Paste suspicious message here..."></textarea>
+    <div class="grid-2">
+      <div>
+        <label for="context-id">{{ ui.ctx_label }}</label>
+        <select id="context-id" name="context_id">
+          {% for cid, ctx in contexts.items() %}
+          <option value="{{ cid }}">{{ ctx.label_hi if lang == "hi" else ctx.label_en }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="language-hint">{{ ui.lang_label }}</label>
+        <select id="language-hint" name="language_hint">
+          <option value="auto">Auto-detect</option>
+          <option value="en">English</option>
+          <option value="hi">Hindi (हिन्दी)</option>
+          <option value="hinglish">Hinglish</option>
+          <option value="gu">Gujarati</option>
+          <option value="ta">Tamil</option>
+          <option value="bn">Bengali</option>
+          <option value="mr">Marathi</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn">{{ ui.btn_analyze }}</button>
+  </form>
+</section>
+<section class="card">
+  <h2>Sample Scam Scenarios</h2>
+  <div class="grid-2">
+    {% for s in samples %}
+    <div class="card">
+      <strong>{{ s.title }}</strong>
+      <p class="muted">{{ s.text }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
